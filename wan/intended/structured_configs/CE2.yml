@@ -1,0 +1,179 @@
+aaa_root:
+  disabled: true
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '''true'''
+aliases: 'alias cc clear counters
+
+  alias cpc clear platform trident counters
+
+  alias senz show interface counter error | nz
+
+  alias shmc show int | awk ''/^[A-Z]/ { intf = $1 } /, address is/ { print intf, $6 }''
+
+  alias snz show interface counter | nz
+
+  alias sqnz show interface counter queue | nz
+
+  alias srnz show interface counter rate | nz
+
+  username admin role network-admin privilege 15 secret sha512 $6$ZV5Le12banee6hLp$D/IpUVs3cgyS4Q.xi8xKfBMqmtlOmmG6IXKn6KbOS4cQvVToTz9ZbJRqhqLLTZxS4NLpJZUJPGu7FxJB0v/OY0
+
+  username cvpadmin secret sha512 $6$n8E8Ext.IOGWnQ7x$YLtZIEHAzz.hmOUKbmcehhDWAc2/oVcTUNQkHgqCnSSYCqRJy5Q3OgLynORM3iiiNzMZ0HvpbzcXiRYxOL9yS/
+
+  username cwomble secret *
+
+  username cwomble ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDOZFQIhHNghkuJryYiNyFUbkVPyGH2tU1gFuoJ/wDDg420VY9tb1OQn7k+XoDaVWWoEoOek07sJzns0Yy7WYUhgHP3T8Q3qW2DRjRDCUgUXnt9iW9N/axh4U4OP71UbWJNw3D6b5JE4EWt56okFcR6eSAyyKoYZvUAiCX1oUGVbRDz0cTNTbbnYHXp8DFBM/3fLNrO7Ntif+1ZtY8IQoZoDaOZpQLqTt40QGBAJgyXy0xP3urSaSJP2alSZP0g2IY9WebHaJAKnzP+SCuU4pMpcWYE3EoevYB6RLy12WylXq7Ht8sy2cjB9HH19BM4lNvRJ7ArjsL8enBP4OdqdyCH/SfLy6YrQ2EFidNpxnGBNVxIA7lkK82jLGFiqKJJNapZW4nRljT+KVMFEh/NTDP61wYmUPCR331+e3TiKsapwcIN/Q1+20WBVf11RseChjLqZzu54y9PDw/MA8ra8mPbuenhNJ6Xw8nkZbeUr+o/jZHwTP0sTLFyv4uJKvOACBc=
+
+  username ec2-user shell /bin/bash nopassword
+
+  username ec2-user ssh-key ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFhhvHS7TWbOyC7xeJOMglKEa4JgZBZiiu550xsFJFZpZKMx0BJM1Z9jGrEV0pEhltg5oiiGDcrviRvYpY2u2fHEL//QmC3dTn8QtCMq7zM2DLgqlPqhsl1n3+rmYYM4rBNyq+1HVT1QIMhWMw8k3Be0+hIbV/8SgH0kcuKzm5ZTU1atOexCB/HRUVP7nQq+NOwB8a4RuYIUIeGvK4kLrMDbt5MHAgWgtapkG/40HwhxWMqmkCMN3ZN1llHRYgade+MMisW1DCtnGLzHhrPJnP60wqEcyV4Bqa6KBR6LgIYk/Q7+WNkW2YClPF7q4GvdCUR8JEavIg624OlPp2moEFt4imrhHyqYaYFn3rP3iKvN0Jw/m9wUe+oAJybLic1F77IyDskpta+qAJOjlYcyDT+ebF6AeMTNBmpA1RzqOh2lL2aB1UxRWo+Cmt2pFrr28djzt3wGUFuds/N+RSW/9iN7PB53TI3sNNABrFzrHT1DvyskDrFsY8K+YURR6DY78=
+  nonroot@buildkitsandbox
+
+  username gcp-user secret *
+
+  username gcp-user ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGPEoZ2l67eEEwrlGfBAHPMx44IoqhyfjqXj2Ka4PxLuHgi1mv131VuCRlyWjOjddccyFUilfR1Bprdmd1Tj7o4Q11YQ138LOqFWJT3h0pxgHFdIHo70y4rI8aL15ixukZYa+g9KX8qTN+ZpFfea2d3CEFzMp+Y3xVPiWwLKzalq1JwT5J4MK2VHCbcnpN3zRON+gca/iZH9upA0WaXWJXNBnYXrgXFVGCJFk6Yl1ZXIGnEcKGe44c77zWgF4C66VhltsW999XD5vF31f6TTs25qxGScsiKMDg2uM1AzVg5KfxxhVy5HKd23YJJMytvUXL9h5Wq1HEEluSCcFtNI81
+
+  username mircea secret *
+
+  username mircea ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDw26o1dbfin+wgiYhiHybYebcYlS1EpucVdzfZASTkaMnCiaGy61mLtCaiZA82MEMNbkHLr9WgO2f9pHN2fiIiJc2gmlZPAUvSDzOHQapGuWzoPbeoKTaPyEzkDD5IzerV8wgMooaJOIWU9dWRjVPpUyj2GJ3JirC3HiLRnhkHFh3F+vUkEL81lMzJ/0HdnW3WrIjU6JnuOnpjiJ+np1OEPSbBdANT89tzaEm87QUioPQF7hHknKFUYK2Zqh5SXR6vQaLEcIhRqlAvZyjc95vDtYFWzqrdrHTdznyr8Hs/R2OeLmPGArGm6V8sGC9Q1bGfbhwjxvoWH9igUO6d82HKL2h8PJ1gXJU4XCb6Dkft7y0M4CDx6tIOo9jDxwFRtim9oC0uwxsRoXL4xCDYGH+jO4RAQSVxP6MQsJBEOvXez6whUev1lR91CiXmtUwQfzfmol03U8xMsBkdZ+Y4B7AkBUIpi/+8aEbMwRACyDZJB0+FzkYuWIYpiqoQ4pwUVw8=
+
+  username service shell /bin/bash secret sha512 $6$n8UTkktQgRXoe/cT$3k5JezugpzweKPQN5SPvnUyATeJEtsCZHIVeO.YhiWcFgUN10RRh9LstwdwVud9vrjArKECYZwISU1DA3dLBd.
+
+  '
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 10.18.148.247:9910
+  cvauth:
+    method: token
+    token_file: /tmp/cv-onboarding-token
+  cvvrf: default
+  disable_aaa: true
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+eos_cli: "no interface Loopback0\n!\nrouter bgp 1000\n  no redistribute connected route-map RM-CONN-2-BGP\n  no neighbor 192.168.9.1\n
+  \ no neighbor 192.168.92.1\n!\nno spanning-tree vlan-id 601,901\n!\nvlan 101\n  name SVC1-VPWS-SINGLE\n!\nvlan 501\n  name SVC4-L2VPN\n!\nvlan
+  601\n  name SVC6\n!\nvlan 901\n  name SVC9\n!\nvlan 902\n!\nvlan 991\n  name SVC9-IXIA\n!\nvlan 1101\n  name SVC10-GATEWAY\n!\ninterface
+  Ethernet1\n  switchport trunk allowed vlan 101,501,601,901-902,1101\n  switchport mode trunk\n!\ninterface Ethernet2\n  switchport
+  trunk allowed vlan 101,501,601,901-902,1101\n  switchport mode trunk\n!\ninterface Ethernet5\n  switchport trunk allowed vlan 101,501,601,901,991,1101\n
+  \ switchport mode trunk\n!\ninterface Vlan601\n!\ninterface Vlan901\n  ip address 192.168.9.10/24\n!\ninterface Vlan902\n  no autostate\n
+  \ ip address 192.168.92.10/24\n!\ninterface Vlan991\n  ip address 192.168.99.1/24\n!\nip as-path access-list SELF permit ^$ any\n!\nip
+  route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12
+  172.28.128.1\nip route 100.200.10.20/30 192.168.9.1\n!\nroute-map SELF_ONLY permit 10\n  match as-path SELF\n!\nrouter bgp 1000\n
+  \ maximum-paths 2\n  bgp additional-paths install ecmp-primary\n  neighbor 192.168.9.1 remote-as 65000\n  neighbor 192.168.9.1 bfd\n
+  \ neighbor 192.168.9.1 route-map SELF_ONLY out\n  neighbor 192.168.9.1 maximum-routes 0\n  neighbor 192.168.92.1 remote-as 65000\n
+  \ neighbor 192.168.92.1 bfd\n  neighbor 192.168.92.1 route-map SELF_ONLY out\n  neighbor 192.168.92.1 maximum-routes 0\n  redistribute
+  connected\n  address-family ipv4\n    neighbor 192.168.9.1 activate\n    neighbor 192.168.92.1 activate\n!\nrouter general\n!"
+hostname: CE2
+ip_name_servers:
+- ip_address: 169.254.169.254
+  vrf: default
+ip_routing: true
+is_deployed: true
+load_interval:
+  default: 5
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.54/24
+  type: oob
+metadata:
+  fabric_name: WAN
+ntp:
+  servers:
+  - name: 0.us.pool.ntp.org
+    preferred: true
+    vrf: default
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.252.99.0/28 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '1000'
+  router_id: null
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors: null
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+router_multicast:
+  ipv4:
+    software_forwarding: kernel
+service_routing_protocols_model: multi-agent
+snmp_server:
+  communities:
+  - name: public
+    access: ro
+spanning_tree:
+  mode: mstp
+system:
+  l1:
+    unsupported_speed_action: error
+    unsupported_error_correction_action: error
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: default
+  ip_routing: false

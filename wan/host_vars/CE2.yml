@@ -1,0 +1,89 @@
+host_custom_structured_router_bgp:
+  neighbors:
+
+load_interval:
+  default: 5
+
+host_custom_structured_eos_cli: |-
+  no interface Loopback0
+  !
+  router bgp 1000
+    no redistribute connected route-map RM-CONN-2-BGP
+    no neighbor 192.168.9.1
+    no neighbor 192.168.92.1
+  !
+  no spanning-tree vlan-id 601,901
+  !
+  vlan 101
+    name SVC1-VPWS-SINGLE
+  !
+  vlan 501
+    name SVC4-L2VPN
+  !
+  vlan 601
+    name SVC6
+  !
+  vlan 901
+    name SVC9
+  !
+  vlan 902
+  !
+  vlan 991
+    name SVC9-IXIA
+  !
+  vlan 1101
+    name SVC10-GATEWAY
+  !
+  interface Ethernet1
+    switchport trunk allowed vlan 101,501,601,901-902,1101
+    switchport mode trunk
+  !
+  interface Ethernet2
+    switchport trunk allowed vlan 101,501,601,901-902,1101
+    switchport mode trunk
+  !
+  interface Ethernet5
+    switchport trunk allowed vlan 101,501,601,901,991,1101
+    switchport mode trunk
+  !
+  interface Vlan601
+  !
+  interface Vlan901
+    ip address 192.168.9.10/24
+  !
+  interface Vlan902
+    no autostate
+    ip address 192.168.92.10/24
+  !
+  interface Vlan991
+    ip address 192.168.99.1/24
+  !
+  ip as-path access-list SELF permit ^$ any
+  !
+  ip route 10.80.0.0/12 172.28.128.1
+  ip route 10.239.0.0/16 172.28.128.1
+  ip route 10.240.0.0/13 172.28.128.1
+  ip route 172.16.0.0/12 172.28.128.1
+  ip route 100.200.10.20/30 192.168.9.1
+  !
+  route-map SELF_ONLY permit 10
+    match as-path SELF
+  !
+  router bgp 1000
+    maximum-paths 2
+    bgp additional-paths install ecmp-primary
+    neighbor 192.168.9.1 remote-as 65000
+    neighbor 192.168.9.1 bfd
+    neighbor 192.168.9.1 route-map SELF_ONLY out
+    neighbor 192.168.9.1 maximum-routes 0
+    neighbor 192.168.92.1 remote-as 65000
+    neighbor 192.168.92.1 bfd
+    neighbor 192.168.92.1 route-map SELF_ONLY out
+    neighbor 192.168.92.1 maximum-routes 0
+    redistribute connected
+    address-family ipv4
+      neighbor 192.168.9.1 activate
+      neighbor 192.168.92.1 activate
+  !
+  router general
+  !
