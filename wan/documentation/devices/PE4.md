@@ -591,6 +591,11 @@ vlan 100
 vlan 501
   name SVC4-L2EVPN
 !
+vlan 601
+  name SVC6
+!
+vrf instance SVC6
+!
 vrf instance SVC7
 !
 vrf instance SVC8
@@ -607,6 +612,13 @@ interface Ethernet9.501
   !
   encapsulation vlan
     client unmatched
+!
+interface Ethernet9.601
+  description SVC6-L3EVPN
+  vlan id 601
+  !
+  encapsulation vlan
+      client dot1q 601
 !
 interface Ethernet9.701
   description SVC7-4364
@@ -660,9 +672,14 @@ interface Loopback0
   node-segment ipv4 index 202 flex-algo CHEAPBW
   isis instance IGP
 !
+interface Vlan601
+  vrf SVC6
+  ip address 192.168.206.1/24
+!
 ip access-list BLOCK_BFD
   20 permit ip any any
 !
+ip routing vrf SVC6
 ip routing vrf SVC7
 ip routing vrf SVC8
 !
@@ -727,6 +744,13 @@ router bgp 65000
   address-family vpn-ipv4
       neighbor IBGP-PEER activate
   !
+  vrf SVC6
+      rd 2.2.2.2:20601
+      route-target import evpn 0.0.0.0:20601
+      route-target export evpn 0.0.0.0:20601
+      redistribute connected
+      redistribute static
+  !
   vrf SVC7
       rd 2.2.2.2:10701
       route-target import vpn-ipv4 0.0.0.0:10701
@@ -745,6 +769,8 @@ router bgp 65000
       recovery delay 600 seconds
 !
 router general
+  !
+  vrf SVC6
 !
 router traffic-engineering
   segment-routing

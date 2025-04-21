@@ -581,6 +581,11 @@ interface Ethernet2
   switchport trunk allowed vlan 101,501,701,801,901,1500
   switchport mode trunk
 !
+interface Ethernet5
+  shutdown
+  switchport trunk allowed vlan 101,501,701,801,901,1500
+  switchport mode trunk
+!
 interface Ethernet47
   switchport access vlan 1999
   switchport trunk allowed vlan none

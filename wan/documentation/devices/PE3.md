@@ -598,6 +598,9 @@ tunnel-ribs
       source-protocol isis flex-algo preference 100
       source-protocol isis segment-routing
 !
+vlan 501
+  name SVC4-L2EVPN
+!
 vlan 601
   name SVC6
 !
@@ -647,17 +650,18 @@ interface Ethernet5.101
   encapsulation vlan
       client dot1q 101
 !
-interface Ethernet5.201
-  description SVC2-VPWS-DOUBLE-1
-  !
-  encapsulation vlan
-      client unmatched
-!
 interface Ethernet5.301
   description SVC3-VPWS-DOUBLE2
   !
   encapsulation vlan
       client dot1q 301
+!
+interface Ethernet5.501
+  description SVC4-L2EVPN
+  vlan id 501
+  !
+  encapsulation vlan
+    client unmatched
 !
 interface Ethernet5.601
   description SVC6-L3EVPN
@@ -694,7 +698,7 @@ interface Loopback0
 !
 interface Vlan601
   vrf SVC6
-  ip address virtual 192.168.206.1/24
+  ip address 192.168.6.1/24
 !
 ip virtual-router mac-address 00:1c:73:00:00:00
 !
@@ -749,14 +753,15 @@ router bgp 65000
   neighbor 4.4.4.4 peer group IBGP-PEER
   neighbor 6.6.6.6 peer group IBGP-PEER
   !
+  vlan 501
+      rd 1.1.1.1:10501
+      route-target both 0.0.0.0:10501
+      redistribute learned
+      redistribute static
+  !
   vlan 1101
       rd 1.1.1.1:1101
       route-target both 0.0.0.0:1101
-      redistribute learned
-  !
-  vlan 601
-      rd 1.1.1.1:30601
-      route-target both 0.0.0.0:30601
       redistribute learned
   !
   vpws SVC1-VPWS-SINGLE
@@ -816,10 +821,8 @@ router bgp 65000
   vrf SVC8
       rd 1.1.1.1:10801
       route-target import evpn 0.0.0.0:20801
-      route-target import vpn-ipv4 0.0.0.0:10801
       route-target import vpn-ipv4 0.0.0.0:20801
       route-target export evpn 0.0.0.0:20801
-      route-target export vpn-ipv4 0.0.0.0:10801
       route-target export vpn-ipv4 0.0.0.0:20801
       redistribute connected
       redistribute static

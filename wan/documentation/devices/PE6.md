@@ -572,6 +572,10 @@ vlan 1101
 !
 vrf instance SVC6
 !
+vrf instance SVC7
+!
+vrf instance SVC8
+!
 interface Ethernet3.101
   description SVC1-VPWS-SINGLE
   load-interval 5
@@ -618,9 +622,18 @@ interface Ethernet4.601
   encapsulation vlan
       client dot1q 601
   !
-  evpn ethernet-segment
-      identifier 0000:0000:0000:0000:0601
-      route-target import 00:00:00:00:06:01
+!
+interface Ethernet4.701
+  description SVC7-4364
+  encapsulation dot1q vlan 701
+  vrf SVC7
+  ip address 192.168.217.1/24
+!
+interface Ethernet4.801
+  description SVC8-INTERWORKING
+  encapsulation dot1q vlan 801
+  vrf SVC8
+  ip address 192.168.218.1/24
 !
 interface Ethernet4.901
   description SVC9-BGP-PEER1
@@ -702,11 +715,15 @@ interface Loopback0
 !
 interface Vlan601
   vrf SVC6
-  ip address virtual 192.168.106.1/24
+  ip address 192.168.116.1/24
 !
 ip virtual-router mac-address 00:1c:73:00:00:00
 !
 ip routing vrf SVC6
+!
+ip routing vrf SVC7
+!
+ip routing vrf SVC8
 !
 ip extcommunity-list L3EVPN_COM permit rt 0.0.0.0:20601
 !
@@ -765,11 +782,6 @@ router bgp 65000
   vlan 501
       rd 4.4.4.4:10501
       route-target both 0.0.0.0:10501
-      redistribute learned
-  !
-  vlan 601
-      rd 4.4.4.4:10601
-      route-target both 0.0.0.0:10601
       redistribute learned
   !
   vlan 901
@@ -837,6 +849,20 @@ router bgp 65000
       rd 4.4.4.4:20601
       route-target import evpn 0.0.0.0:20601
       route-target export evpn 0.0.0.0:20601
+      redistribute connected
+      redistribute static
+  !
+  vrf SVC7
+      rd 4.4.4.4:10701
+      route-target import vpn-ipv4 0.0.0.0:10701
+      route-target export vpn-ipv4 0.0.0.0:10701
+      redistribute connected
+      redistribute static
+  !
+  vrf SVC8
+      rd 4.4.4.4:10801
+      route-target import evpn 0.0.0.0:20801
+      route-target export evpn 0.0.0.0:20801
       redistribute connected
       redistribute static
   !
