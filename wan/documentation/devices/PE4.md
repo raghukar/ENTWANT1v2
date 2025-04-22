@@ -761,7 +761,9 @@ router bgp 65000
   vrf SVC8
       rd 2.2.2.2:10801
       route-target import evpn 0.0.0.0:20801
+      route-target import vpn-ipv4 0.0.0.0:20801
       route-target export evpn 0.0.0.0:20801
+      route-target export vpn-ipv4 0.0.0.0:20801
       redistribute connected
       redistribute static
   !

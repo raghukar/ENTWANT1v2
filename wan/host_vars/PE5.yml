@@ -376,9 +376,7 @@ host_custom_structured_eos_cli: |-
     vrf SVC8
         rd 3.3.3.3:10801
         route-target import evpn 0.0.0.0:20801
-        route-target import vpn-ipv4 0.0.0.0:20801
         route-target export evpn 0.0.0.0:20801
-        route-target export vpn-ipv4 0.0.0.0:20801
         redistribute connected
         redistribute static
     !

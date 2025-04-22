@@ -115,13 +115,12 @@ eos_cli: "cfm\n  profile POC\n      continuity-check tx-interval 10 milliseconds
   \     route-target export evpn 0.0.0.0:20601\n      redistribute connected\n      redistribute static\n  !\n  vrf SVC7\n      rd 3.3.3.3:10701\n
   \     route-target import vpn-ipv4 0.0.0.0:10701\n      route-target export vpn-ipv4 0.0.0.0:10701\n      redistribute connected\n
   \     redistribute static\n  !\n  vrf SVC8\n      rd 3.3.3.3:10801\n      route-target import evpn 0.0.0.0:20801\n      route-target
-  import vpn-ipv4 0.0.0.0:20801\n      route-target export evpn 0.0.0.0:20801\n      route-target export vpn-ipv4 0.0.0.0:20801\n      redistribute
-  connected\n      redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n      recovery delay 600 seconds\n!\nrouter traffic-engineering\n
-  \ segment-routing\n  !\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric min-delay\n        color 130\n      !\n      flex-algo
-  255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0030.0300.3003.00\n  is-type level-2\n  timers local-convergence-delay
-  protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n  timers lsp out-delay 2000\n  !\n  address-family
-  ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing mpls\n      no shutdown\n      flex-algo CHEAPBW
-  level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
+  export evpn 0.0.0.0:20801\n      redistribute connected\n      redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n      recovery
+  delay 600 seconds\n!\nrouter traffic-engineering\n  segment-routing\n  !\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric
+  min-delay\n        color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0030.0300.3003.00\n
+  \ is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n
+  \ timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing
+  mpls\n      no shutdown\n      flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
 hostname: PE5
 ip_igmp_snooping:
   globally_enabled: true
