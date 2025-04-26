@@ -669,7 +669,7 @@ interface Ethernet4.1101
       route-target import 00:00:00:00:11:01
 !
 interface Ethernet1
-  description SMV462
+  description PE2
   no switchport
   ip address 10.5.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -678,7 +678,7 @@ interface Ethernet1
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet2
-  description SMV577
+  description PE5
   no switchport
   ip address 10.4.0.1/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -687,7 +687,6 @@ interface Ethernet2
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet3
-  description CAL414_CE3
   load-interval 5
   bgp session tracker ROUTE_REFLECTORS
   no switchport
@@ -697,7 +696,7 @@ interface Ethernet3
       route-target import 10:10:00:00:00:00
 !
 interface Ethernet4
-  description SDM369_CE4
+  description CE2
   load-interval 5
   bgp session tracker ROUTE_REFLECTORS
   no switchport

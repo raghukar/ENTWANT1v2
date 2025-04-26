@@ -57,13 +57,13 @@ daemon_terminattr:
 enable_password:
   disabled: true
 eos_cli: "no router bgp 1000\nno interface Loopback0\n!\ninterface Ethernet1\n  description IXIA\n  no switchport\n  ip address 100.200.10.21/30\n!\ninterface
-  Ethernet49\n  description SMV459\n  no switchport\n  ip address 100.1.0.1/31\n!\ninterface Ethernet50\n  description SMV462\n  no
-  switchport\n  ip address 100.2.0.1/31\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.81.0.0/16 172.28.128.1\nip route 10.95.0.0/16
-  172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\nip route 192.168.9.1/32 100.1.0.0\nip route
-  192.168.9.10/32 100.1.0.0\n!\nrouter bgp 100\n  maximum-paths 2\n  bgp additional-paths install\n  neighbor 100.0.0.0 remote-as 400\n
-  \ neighbor 100.0.0.0 maximum-routes 0\n  neighbor 100.1.0.0 remote-as 65000\n  neighbor 100.1.0.0 local-as 300 no-prepend replace-as\n
-  \ neighbor 100.1.0.0 maximum-routes 0\n  neighbor 100.2.0.0 remote-as 65000\n  neighbor 100.2.0.0 local-as 200 no-prepend replace-as\n
-  \ neighbor 100.2.0.0 maximum-routes 0\n  redistribute connected\n!"
+  Ethernet49\n  description PE1\n  no switchport\n  ip address 100.1.0.1/31\n!\ninterface Ethernet50\n  description PE2\n  no switchport\n
+  \ ip address 100.2.0.1/31\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.81.0.0/16 172.28.128.1\nip route 10.95.0.0/16 172.28.128.1\nip
+  route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\nip route 192.168.9.1/32 100.1.0.0\nip route 192.168.9.10/32
+  100.1.0.0\n!\nrouter bgp 100\n  maximum-paths 2\n  bgp additional-paths install\n  neighbor 100.0.0.0 remote-as 400\n  neighbor 100.0.0.0
+  maximum-routes 0\n  neighbor 100.1.0.0 remote-as 65000\n  neighbor 100.1.0.0 local-as 300 no-prepend replace-as\n  neighbor 100.1.0.0
+  maximum-routes 0\n  neighbor 100.2.0.0 remote-as 65000\n  neighbor 100.2.0.0 local-as 200 no-prepend replace-as\n  neighbor 100.2.0.0
+  maximum-routes 0\n  redistribute connected\n!"
 hostname: IntAgg1
 ip_name_servers:
 - ip_address: 169.254.169.254

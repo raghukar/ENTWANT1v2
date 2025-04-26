@@ -71,13 +71,13 @@ eos_cli: "vlan 501\n  name SVC4-L2EVPN\n!\nvlan 601\n  name SVC5-L3EVPN\n!\nvlan
   Ethernet4.902\n  description SVC9-BGP-PEER2\n  vlan id 902\n  !\n  encapsulation vlan\n      client dot1q 902\n  !\n  evpn ethernet-segment\n
   \     identifier 0000:0000:0000:0000:0902\n      route-target import 00:00:00:00:09:02\n!\ninterface Ethernet4.1101\n  description
   SVC10-EVPN-GATEWAY\n  vlan id 1101\n  !\n  encapsulation vlan\n      client dot1q 1101\n  !\n  evpn ethernet-segment\n      identifier
-  0000:0000:0000:0000:1101\n      route-target import 00:00:00:00:11:01\n!\ninterface Ethernet1\n  description SMV462\n  no switchport\n
+  0000:0000:0000:0000:1101\n      route-target import 00:00:00:00:11:01\n!\ninterface Ethernet1\n  description PE2\n  no switchport\n
   \ ip address 10.5.0.0/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering
-  min-delay static 10 milliseconds\n!\ninterface Ethernet2\n  description SMV577\n  no switchport\n  ip address 10.4.0.1/31\n  bfd interval
+  min-delay static 10 milliseconds\n!\ninterface Ethernet2\n  description PE5\n  no switchport\n  ip address 10.4.0.1/31\n  bfd interval
   50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
-  Ethernet3\n  description CAL414_CE3\n  load-interval 5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n  !\n  evpn ethernet-segment\n
-  \     identifier 0010:1000:0000:0000:0000\n      route-target import 10:10:00:00:00:00\n!\ninterface Ethernet4\n  description SDM369_CE4\n
-  \ load-interval 5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n  !\n  evpn ethernet-segment\n      identifier 0010:1001:0000:0000:0000\n
+  Ethernet3\n  load-interval 5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n  !\n  evpn ethernet-segment\n      identifier
+  0010:1000:0000:0000:0000\n      route-target import 10:10:00:00:00:00\n!\ninterface Ethernet4\n  description CE2\n  load-interval
+  5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n  !\n  evpn ethernet-segment\n      identifier 0010:1001:0000:0000:0000\n
   \     route-target import 10:10:01:00:00:00\n!\ninterface Loopback0\n  ip address 4.4.4.4/32\n  node-segment ipv4 index 4\n  node-segment
   ipv4 index 104 flex-algo LOWLATENCY\n  node-segment ipv4 index 204 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan601\n
   \ vrf SVC6\n  ip address 192.168.116.1/24\n!\nip virtual-router mac-address 00:1c:73:00:00:00\n!\nip routing vrf SVC6\n!\nip routing

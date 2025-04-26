@@ -559,12 +559,12 @@ interface Ethernet1
   ip address 100.200.10.21/30
 !
 interface Ethernet49
-  description SMV459
+  description PE1
   no switchport
   ip address 100.1.0.1/31
 !
 interface Ethernet50
-  description SMV462
+  description PE2
   no switchport
   ip address 100.2.0.1/31
 !

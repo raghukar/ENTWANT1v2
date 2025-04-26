@@ -587,7 +587,7 @@ interface Ethernet1
   arp aging timeout 3
 !
 interface Ethernet3
-  description SMV463
+  description PE3
   no switchport
   ip address 10.1.0.1/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -596,7 +596,7 @@ interface Ethernet3
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet4
-  description SMV462
+  description PE2
   no switchport
   ip address 10.6.0.1/31
   bfd interval 50 min-rx 50 multiplier 3

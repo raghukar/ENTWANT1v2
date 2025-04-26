@@ -620,7 +620,7 @@ management security
       secret NUM1 7 $1c$G8BQN0ezkiJOX2cuAYpsEA== receive-lifetime infinite transmit-lifetime infinite
 !
 interface Ethernet1
-  description SMV459
+  description PE1
   no switchport
   ip address 10.1.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -629,7 +629,7 @@ interface Ethernet1
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet2
-  description SMV573
+  description PE4
   no switchport
   ip address 10.0.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -639,13 +639,13 @@ interface Ethernet2
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet5
-  description MRV422_CE1
+  description CE1
   load-interval 5
   bgp session tracker ROUTE_REFLECTORS
   no switchport
 !
 interface Ethernet5.101
-  description SVC1-VPWS-SINGLE
+  description SVC1-VPWS-SINGLE-2
   !
   encapsulation vlan
       client dot1q 101
@@ -718,7 +718,7 @@ ip route 172.16.0.0/12 172.28.128.1
 patch panel
   patch subintpo5.101
       connector 1 interface Ethernet5.101
-      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE pseudowire pw1
+      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1
   !
   patch subintpo5.201
       connector 1 interface Ethernet5.201
@@ -764,14 +764,14 @@ router bgp 65000
       route-target both 0.0.0.0:1101
       redistribute learned
   !
-  vpws SVC1-VPWS-SINGLE
-      rd 2.2.2.2:10101
-      route-target import export evpn 0.0.0.0:10101
+  vpws SVC1-VPWS-SINGLE-2
+      rd 1.1.1.1:11101
+      route-target import export evpn 0.0.0.0:11101
       mpls control-word
       label flow
       !
       pseudowire pw1
-        evpn vpws id local 20101 remote 10101
+        evpn vpws id local 11101 remote 21101
   !
   vpws SVC2-VPWS-DOUBLE-1
       rd 1.1.1.1:10201

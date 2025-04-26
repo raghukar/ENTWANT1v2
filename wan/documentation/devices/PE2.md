@@ -587,7 +587,7 @@ interface Ethernet1
   ip address 100.2.0.0/31
 !
 interface Ethernet3
-  description SMV459
+  description PE1
   no switchport
   ip address 10.6.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -596,7 +596,7 @@ interface Ethernet3
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet4
-  description SDM368
+  description PE6
   no switchport
   ip address 10.5.0.1/31
   bfd interval 50 min-rx 50 multiplier 3

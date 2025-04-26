@@ -633,7 +633,7 @@ interface Ethernet9.801
   ip address 192.168.108.1/24
 !
 interface Ethernet1
-  description SMV463
+  description PE3
   no switchport
   ip address 10.0.0.1/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -642,7 +642,6 @@ interface Ethernet1
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet2
-  description SMD554
   no switchport
   ip address 10.3.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -651,7 +650,7 @@ interface Ethernet2
   traffic-engineering min-delay static 10 milliseconds
 !
 interface Ethernet5
-  description SMV577
+  description PE5
   no switchport
   ip address 10.2.0.0/31
   bfd interval 50 min-rx 50 multiplier 3
@@ -661,7 +660,7 @@ interface Ethernet5
 !
 interface Ethernet9
   no switchport
-  description MRV423_CE2
+  description CE1
   bgp session tracker ROUTE_REFLECTORS
   no switchport
 !
@@ -722,7 +721,7 @@ router bgp 65000
       redistribute static
   !
   vpws SVC1-VPWS-SINGLE-2
-      rd 2.2.2.2:10101
+      rd 2.2.2.2:11101
       route-target import export evpn 0.0.0.0:11101
       mpls control-word
       label flow

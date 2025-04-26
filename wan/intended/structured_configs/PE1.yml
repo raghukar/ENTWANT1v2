@@ -57,30 +57,30 @@ daemon_terminattr:
 enable_password:
   disabled: true
 eos_cli: "vlan 901\n  name SVC9_BGP_PEER1\n!\ninterface Ethernet1\n  description INTERNET_AGGREGATOR\n  no switchport\n  ip address
-  100.1.0.0/31\n  arp aging timeout 3\n!\ninterface Ethernet3\n  description SMV463\n  no switchport\n  ip address 10.1.0.1/31\n  bfd
-  interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
-  Ethernet4\n  description SMV462\n  no switchport\n  ip address 10.6.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable
-  IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet16\n  description
-  LOOPBACK_FOR_ACTIVE\n  switchport access vlan 901\n!\ninterface Loopback0\n  ip address 6.6.6.6/32\n  node-segment ipv4 index 6\n
-  \ node-segment ipv4 index 106 flex-algo LOWLATENCY\n  node-segment ipv4 index 206 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface
-  Vlan901\n  no autostate\n  ip address 192.168.9.1/24\n!\nmac address-table static 001c.7300.0000 vlan 901 interface Ethernet16\n!\nip
-  virtual-router mac-address 00:1c:73:00:00:00\n!\nmac access-list BLOCK_ARP\n  10 deny any any arp\n  20 permit any any\n!\nip route
-  10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\n!\nrouter
-  bgp 65000\n  router-id 6.6.6.6\n  update wait-install\n  maximum-paths 4 ecmp 4\n  neighbor EBGP-PEER peer group\n  neighbor EBGP-PEER
-  remote-as 300\n  neighbor EBGP-PEER maximum-routes 0\n  neighbor IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor
-  IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 1.1.1.1
-  peer group IBGP-PEER\n  neighbor 2.2.2.2 peer group IBGP-PEER\n  neighbor 3.3.3.3 peer group IBGP-PEER\n  neighbor 4.4.4.4 peer group
-  IBGP-PEER\n  neighbor 5.5.5.5 peer group IBGP-PEER\n  neighbor 100.1.0.1 peer group EBGP-PEER\n  neighbor 192.168.9.10 remote-as 1000\n
-  \ neighbor 192.168.9.10 bfd\n  !\n  vlan 901\n      rd 6.6.6.6:10901\n      route-target both 0.0.0.0:10901\n      redistribute learned\n
-  \     redistribute static\n      redistribute router-mac system default-gateway\n  !\n  address-family evpn\n      neighbor default
-  encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n  address-family ipv4\n      bgp
-  additional-paths install\n      neighbor IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER
-  additional-paths send limit 2\n      neighbor 192.168.9.10 activate\n      neighbor EBGP-PEER activate\n      redistribute connected\n
-  \ !\n  address-family vpn-ipv4\n      neighbor IBGP-PEER activate\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo 128
-  LOWLATENCY\n        metric min-delay\n        color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n
-  \ net 49.0000.0060.0600.6006.00\n  is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit on-startup
-  300\n  spf-interval 2 10 100\n  timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n
-  \ !\n  segment-routing mpls\n      no shutdown\n      flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
+  100.1.0.0/31\n  arp aging timeout 3\n!\ninterface Ethernet3\n  description PE3\n  no switchport\n  ip address 10.1.0.1/31\n  bfd interval
+  50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
+  Ethernet4\n  description PE2\n  no switchport\n  ip address 10.6.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n
+  \ isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet16\n  description LOOPBACK_FOR_ACTIVE\n
+  \ switchport access vlan 901\n!\ninterface Loopback0\n  ip address 6.6.6.6/32\n  node-segment ipv4 index 6\n  node-segment ipv4 index
+  106 flex-algo LOWLATENCY\n  node-segment ipv4 index 206 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan901\n  no autostate\n
+  \ ip address 192.168.9.1/24\n!\nmac address-table static 001c.7300.0000 vlan 901 interface Ethernet16\n!\nip virtual-router mac-address
+  00:1c:73:00:00:00\n!\nmac access-list BLOCK_ARP\n  10 deny any any arp\n  20 permit any any\n!\nip route 10.80.0.0/12 172.28.128.1\nip
+  route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\n!\nrouter bgp 65000\n
+  \ router-id 6.6.6.6\n  update wait-install\n  maximum-paths 4 ecmp 4\n  neighbor EBGP-PEER peer group\n  neighbor EBGP-PEER remote-as
+  300\n  neighbor EBGP-PEER maximum-routes 0\n  neighbor IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER
+  update-source Loopback0\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 1.1.1.1 peer group
+  IBGP-PEER\n  neighbor 2.2.2.2 peer group IBGP-PEER\n  neighbor 3.3.3.3 peer group IBGP-PEER\n  neighbor 4.4.4.4 peer group IBGP-PEER\n
+  \ neighbor 5.5.5.5 peer group IBGP-PEER\n  neighbor 100.1.0.1 peer group EBGP-PEER\n  neighbor 192.168.9.10 remote-as 1000\n  neighbor
+  192.168.9.10 bfd\n  !\n  vlan 901\n      rd 6.6.6.6:10901\n      route-target both 0.0.0.0:10901\n      redistribute learned\n      redistribute
+  static\n      redistribute router-mac system default-gateway\n  !\n  address-family evpn\n      neighbor default encapsulation mpls
+  next-hop-self source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n  address-family ipv4\n      bgp additional-paths
+  install\n      neighbor IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER additional-paths
+  send limit 2\n      neighbor 192.168.9.10 activate\n      neighbor EBGP-PEER activate\n      redistribute connected\n  !\n  address-family
+  vpn-ipv4\n      neighbor IBGP-PEER activate\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric
+  min-delay\n        color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0060.0600.6006.00\n
+  \ is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n
+  \ timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing
+  mpls\n      no shutdown\n      flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
 hostname: PE1
 ip_igmp_snooping:
   globally_enabled: true

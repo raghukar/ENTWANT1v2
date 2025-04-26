@@ -64,23 +64,23 @@ eos_cli: "tunnel-ribs\n  tunnel-rib system-tunnel-rib\n      source-protocol nex
   unmatched\n!\ninterface Ethernet9.601\n  description SVC6-L3EVPN\n  vlan id 601\n  !\n  encapsulation vlan\n      client dot1q 601\n!\ninterface
   Ethernet9.701\n  description SVC7-4364\n  encapsulation dot1q vlan 701\n  vrf SVC7\n  ip address 192.168.107.1/24\n!\ninterface Ethernet9.801\n
   \ description SVC8-INTERWORKING\n  encapsulation dot1q vlan 801\n  vrf SVC8\n  ip address 192.168.108.1/24\n!\ninterface Ethernet1\n
-  \ description SMV463\n  no switchport\n  ip address 10.0.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis
-  network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet2\n  description SMD554\n  no
-  switchport\n  ip address 10.3.0.0/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n
-  \ traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet5\n  description SMV577\n  no switchport\n  ip address
-  10.2.0.0/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay
-  static 10000 milliseconds\n!\ninterface Ethernet9\n  no switchport\n  description MRV423_CE2\n  bgp session tracker ROUTE_REFLECTORS\n
-  \ no switchport\n!\ninterface Loopback0\n  ip address 2.2.2.2/32\n  node-segment ipv4 index 2\n  node-segment ipv4 index 102 flex-algo
-  LOWLATENCY\n  node-segment ipv4 index 202 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan601\n  vrf SVC6\n  ip address 192.168.206.1/24\n!\nip
-  access-list BLOCK_BFD\n  20 permit ip any any\n!\nip routing vrf SVC6\nip routing vrf SVC7\nip routing vrf SVC8\n!\nsystem control-plane\n
-  \ ip access-group BLOCK_BFD in\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13
-  172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\n!\npatch panel\n  patch subintpo9.101\n      connector 1 interface Ethernet9.101\n
-  \     connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1\n!\nrouter bgp 65000\n  router-id 2.2.2.2\n  maximum-paths
-  4 ecmp 4\n  neighbor IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor
-  IBGP-PEER bfd\n  neighbor IBGP-PEER session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes
-  0\n  neighbor 4.4.4.4 peer group IBGP-PEER\n  neighbor 6.6.6.6 peer group IBGP-PEER\n  !\n  vlan 501\n      rd 2.2.2.2:10501\n      route-target
+  \ description PE3\n  no switchport\n  ip address 10.0.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis
+  network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet2\n  no switchport\n  ip address
+  10.3.0.0/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay
+  static 10 milliseconds\n!\ninterface Ethernet5\n  description PE5\n  no switchport\n  ip address 10.2.0.0/31\n  bfd interval 50 min-rx
+  50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10000 milliseconds\n!\ninterface
+  Ethernet9\n  no switchport\n  description CE1\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n!\ninterface Loopback0\n  ip
+  address 2.2.2.2/32\n  node-segment ipv4 index 2\n  node-segment ipv4 index 102 flex-algo LOWLATENCY\n  node-segment ipv4 index 202
+  flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan601\n  vrf SVC6\n  ip address 192.168.206.1/24\n!\nip access-list BLOCK_BFD\n
+  \ 20 permit ip any any\n!\nip routing vrf SVC6\nip routing vrf SVC7\nip routing vrf SVC8\n!\nsystem control-plane\n  ip access-group
+  BLOCK_BFD in\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip
+  route 172.16.0.0/12 172.28.128.1\n!\npatch panel\n  patch subintpo9.101\n      connector 1 interface Ethernet9.101\n      connector
+  2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1\n!\nrouter bgp 65000\n  router-id 2.2.2.2\n  maximum-paths 4 ecmp 4\n  neighbor
+  IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER bfd\n
+  \ neighbor IBGP-PEER session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n
+  \ neighbor 4.4.4.4 peer group IBGP-PEER\n  neighbor 6.6.6.6 peer group IBGP-PEER\n  !\n  vlan 501\n      rd 2.2.2.2:10501\n      route-target
   both 0.0.0.0:10501\n      redistribute learned\n      redistribute static\n  !\n  vlan 901\n      rd 2.2.2.2:10901\n      route-target
-  both 0.0.0.0:10901\n      redistribute learned\n      redistribute static\n  !\n  vpws SVC1-VPWS-SINGLE-2\n      rd 2.2.2.2:10101\n
+  both 0.0.0.0:10901\n      redistribute learned\n      redistribute static\n  !\n  vpws SVC1-VPWS-SINGLE-2\n      rd 2.2.2.2:11101\n
   \     route-target import export evpn 0.0.0.0:11101\n      mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn
   vpws id local 11101 remote 21101\n  !\n  address-family evpn\n      neighbor default encapsulation mpls next-hop-self source-interface
   Loopback0\n      next-hop mpls resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib system-tunnel-rib\n      neighbor

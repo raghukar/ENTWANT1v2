@@ -57,13 +57,13 @@ daemon_terminattr:
 enable_password:
   disabled: true
 eos_cli: "no spanning-tree vlan-id 901-902\n!\nvlan 902\n!\ninterface Ethernet1\n  description INTERNET_AGGREGATOR\n  no switchport\n
-  \ ip address 100.2.0.0/31\n!\ninterface Ethernet3\n  description SMV459\n  no switchport\n  ip address 10.6.0.0/31\n  bfd interval
-  50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
-  Ethernet4\n  description SDM368\n  no switchport\n  ip address 10.5.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable
-  IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet16\n  switchport
-  access vlan 901\n  switchport mode trunk\n!\ninterface Loopback0\n  ip address 5.5.5.5/32\n  node-segment ipv4 index 5\n  node-segment
-  ipv4 index 105 flex-algo LOWLATENCY\n  node-segment ipv4 index 205 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan902\n
-  \ ip address 192.168.92.1/24\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip
+  \ ip address 100.2.0.0/31\n!\ninterface Ethernet3\n  description PE1\n  no switchport\n  ip address 10.6.0.0/31\n  bfd interval 50
+  min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
+  Ethernet4\n  description PE6\n  no switchport\n  ip address 10.5.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n
+  \ isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet16\n  switchport access
+  vlan 901\n  switchport mode trunk\n!\ninterface Loopback0\n  ip address 5.5.5.5/32\n  node-segment ipv4 index 5\n  node-segment ipv4
+  index 105 flex-algo LOWLATENCY\n  node-segment ipv4 index 205 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan902\n  ip address
+  192.168.92.1/24\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip
   route 172.16.0.0/12 172.28.128.1\n!\nrouter bgp 65000\n  router-id 5.5.5.5\n  update wait-install\n  maximum-paths 4 ecmp 4\n  neighbor
   EBGP-PEER peer group\n  neighbor EBGP-PEER remote-as 200\n  neighbor EBGP-PEER maximum-routes 0\n  neighbor IBGP-PEER peer group\n
   \ neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER bfd\n  neighbor IBGP-PEER
