@@ -643,6 +643,10 @@ interface Ethernet5
   load-interval 5
   bgp session tracker ROUTE_REFLECTORS
   no switchport
+  evpn ethernet-segment
+      identifier 0020:2000:0000:0000:0000
+      route-target import 20:20:00:00:00:00
+  !
 !
 interface Ethernet5.101
   description SVC1-VPWS-SINGLE-2
@@ -662,6 +666,11 @@ interface Ethernet5.501
   !
   encapsulation vlan
     client unmatched
+  !
+  evpn ethernet-segment
+      identifier 0020:0000:0000:0000:0501
+      route-target import 00:20:00:00:05:01
+  !
 !
 interface Ethernet5.601
   description SVC6-L3EVPN
