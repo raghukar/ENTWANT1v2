@@ -299,7 +299,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 4.4.4.4/32 |
+| Loopback0 | ROUTER_ID | default | 1.0.0.6/32 |
 
 ##### IPv6
 
@@ -320,7 +320,7 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 4.4.4.4/32
+   ip address 1.0.0.6/32
    node-segment ipv4 index 4
    isis enable IGP
    node-segment ipv4 index 104 flex-algo LOWLATENCY
@@ -371,7 +371,7 @@ ip routing
 | Instance | IGP |
 | Net-ID | 49.0000.0040.0400.4004.00 |
 | Type | level-2 |
-| Router-ID | 4.4.4.4 |
+| Router-ID | 1.0.0.6 |
 | Log Adjacency Changes | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 2 seconds |
@@ -411,7 +411,7 @@ ip routing
 !
 router isis IGP
    net 49.0000.0040.0400.4004.00
-   router-id ipv4 4.4.4.4
+   router-id ipv4 1.0.0.6
    is-type level-2
    log-adjacency-changes
    timers local-convergence-delay 10000 protected-prefixes
@@ -435,7 +435,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 4.4.4.4 |
+| 65000 | 1.0.0.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -447,7 +447,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65000
-   router-id 4.4.4.4
+   router-id 1.0.0.6
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
 ```
@@ -671,7 +671,7 @@ interface Ethernet4.1101
 interface Ethernet1
   description PE2
   no switchport
-  ip address 10.5.0.0/31
+  ip address 10.1.0.5/31
   bfd interval 50 min-rx 50 multiplier 3
   isis enable IGP
   isis network point-to-point
@@ -680,7 +680,7 @@ interface Ethernet1
 interface Ethernet2
   description PE5
   no switchport
-  ip address 10.4.0.1/31
+  ip address 10.1.0.6/31
   bfd interval 50 min-rx 50 multiplier 3
   isis enable IGP
   isis network point-to-point
@@ -706,8 +706,8 @@ interface Ethernet4
       route-target import 10:10:01:00:00:00
 !
 interface Loopback0
-  ip address 4.4.4.4/32
-  node-segment ipv4 index 4
+  ip address 1.0.0.6/32
+  node-segment ipv4 index 6
   node-segment ipv4 index 104 flex-algo LOWLATENCY
   node-segment ipv4 index 204 flex-algo CHEAPBW
   isis instance IGP
@@ -755,7 +755,7 @@ route-map COLOR_L2VPN permit 11
 route-map COLOR_L2VPN permit 20
 !
 router bgp 65000
-  router-id 4.4.4.4
+  router-id 1.0.0.6
   maximum-paths 4 ecmp 4
   bgp additional-paths send limit 2
   neighbor IBGP-PEER peer group
@@ -765,38 +765,36 @@ router bgp 65000
   neighbor IBGP-PEER session tracker ROUTE_REFLECTORS
   neighbor IBGP-PEER send-community
   neighbor IBGP-PEER maximum-routes 0
-  neighbor 1.1.1.1 peer group IBGP-PEER
-  neighbor 2.2.2.2 peer group IBGP-PEER
-  neighbor 3.3.3.3 peer group IBGP-PEER
-  neighbor 5.5.5.5 peer group IBGP-PEER
-  neighbor 6.6.6.6 peer group IBGP-PEER
-  neighbor 7.7.7.7 peer group IBGP-PEER
-  neighbor 8.8.8.8 peer group IBGP-PEER
+  neighbor 1.0.0.1 peer group IBGP-PEER
+  neighbor 1.0.0.2 peer group IBGP-PEER
+  neighbor 1.0.0.3 peer group IBGP-PEER
+  neighbor 1.0.0.4 peer group IBGP-PEER
+  neighbor 1.0.0.5 peer group IBGP-PEER
   !
   vlan 1101
-      rd 4.4.4.4:1101
+      rd 1.0.0.6:1101
       route-target both 0.0.0.0:21101
       redistribute learned
   !
   vlan 501
-      rd 4.4.4.4:10501
+      rd 1.0.0.6:10501
       route-target both 0.0.0.0:10501
       redistribute learned
   !
   vlan 901
-      rd 4.4.4.4:10901
+      rd 1.0.0.6:10901
       route-target both 0.0.0.0:10901
       redistribute learned
       redistribute static
   !
   vlan 902
-      rd 4.4.4.4:10902
+      rd 1.0.0.6:10902
       route-target both 0.0.0.0:10902
       redistribute learned
       redistribute static
   !
   vpws SVC1-VPWS-SINGLE
-      rd 4.4.4.4:10101
+      rd 1.0.0.6:10101
       route-target import export evpn 0.0.0.0:10101
       mpls control-word
       label flow
@@ -805,7 +803,7 @@ router bgp 65000
         evpn vpws id local 20101 remote 10101
   !
   vpws SVC1-VPWS-SINGLE-2
-      rd 4.4.4.4:11101
+      rd 1.0.0.6:11101
       route-target import export evpn 0.0.0.0:11101
       mpls control-word
       label flow
@@ -814,7 +812,7 @@ router bgp 65000
         evpn vpws id local 21101 remote 11101
   !
   vpws SVC2-VPWS-DOUBLE-1
-      rd 4.4.4.4:10201
+      rd 1.0.0.6:10201
       route-target import export evpn 0.0.0.0:10201
       mpls control-word
       label flow
@@ -823,7 +821,7 @@ router bgp 65000
         evpn vpws id local 20102 remote 10201
   !
   vpws SVC3-VPWS-DOUBLE-2
-      rd 4.4.4.4:10301
+      rd 1.0.0.6:10301
       route-target import export evpn 0.0.0.0:10301
       mpls control-word
       label flow
@@ -845,21 +843,21 @@ router bgp 65000
       neighbor IBGP-PEER activate
   !
   vrf SVC6
-      rd 4.4.4.4:20601
+      rd 1.0.0.6:20601
       route-target import evpn 0.0.0.0:20601
       route-target export evpn 0.0.0.0:20601
       redistribute connected
       redistribute static
   !
   vrf SVC7
-      rd 4.4.4.4:10701
+      rd 1.0.0.6:10701
       route-target import vpn-ipv4 0.0.0.0:10701
       route-target export vpn-ipv4 0.0.0.0:10701
       redistribute connected
       redistribute static
   !
   vrf SVC8
-      rd 4.4.4.4:10801
+      rd 1.0.0.6:10801
       route-target import evpn 0.0.0.0:20801
       route-target export evpn 0.0.0.0:20801
       redistribute connected
@@ -880,7 +878,7 @@ router traffic-engineering
         color 230
 !
 router isis IGP
-  net 49.0000.0040.0400.4004.00
+  net 49.0000.0000.0100.0006.00
   is-type level-2
   timers local-convergence-delay protected-prefixes
   set-overload-bit on-startup 300

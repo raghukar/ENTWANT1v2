@@ -320,7 +320,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 2.2.2.2/32 |
+| Loopback0 | ROUTER_ID | default | 1.0.0.4/32 |
 
 ##### IPv6
 
@@ -341,7 +341,7 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 2.2.2.2/32
+   ip address 1.0.0.4/32
    node-segment ipv4 index 2
    isis enable IGP
    node-segment ipv4 index 102 flex-algo LOWLATENCY
@@ -392,7 +392,7 @@ ip routing
 | Instance | IGP |
 | Net-ID | 49.0000.0020.0200.2002.00 |
 | Type | level-2 |
-| Router-ID | 2.2.2.2 |
+| Router-ID | 1.0.0.4 |
 | Log Adjacency Changes | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 2 seconds |
@@ -432,7 +432,7 @@ ip routing
 !
 router isis IGP
    net 49.0000.0020.0200.2002.00
-   router-id ipv4 2.2.2.2
+   router-id ipv4 1.0.0.4
    is-type level-2
    log-adjacency-changes
    timers local-convergence-delay 10000 protected-prefixes
@@ -456,7 +456,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 2.2.2.2 |
+| 65000 | 1.0.0.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -468,7 +468,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65000
-   router-id 2.2.2.2
+   router-id 1.0.0.4
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
 ```
@@ -640,7 +640,7 @@ interface Ethernet9.801
 interface Ethernet1
   description PE3
   no switchport
-  ip address 10.0.0.1/31
+  ip address 10.1.0.10/31
   bfd interval 50 min-rx 50 multiplier 3
   isis enable IGP
   isis network point-to-point
@@ -657,7 +657,7 @@ interface Ethernet2
 interface Ethernet5
   description PE5
   no switchport
-  ip address 10.2.0.0/31
+  ip address 10.1.0.9/31
   bfd interval 50 min-rx 50 multiplier 3
   isis enable IGP
   isis network point-to-point
@@ -674,8 +674,8 @@ interface Ethernet9
   !
 !
 interface Loopback0
-  ip address 2.2.2.2/32
-  node-segment ipv4 index 2
+  ip address 1.0.0.4/32
+  node-segment ipv4 index 4
   node-segment ipv4 index 102 flex-algo LOWLATENCY
   node-segment ipv4 index 202 flex-algo CHEAPBW
   isis instance IGP
@@ -705,7 +705,7 @@ patch panel
       connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1
 !
 router bgp 65000
-  router-id 2.2.2.2
+  router-id 1.0.0.4
   maximum-paths 4 ecmp 4
   neighbor IBGP-PEER peer group
   neighbor IBGP-PEER remote-as 65000
@@ -714,23 +714,23 @@ router bgp 65000
   neighbor IBGP-PEER session tracker ROUTE_REFLECTORS
   neighbor IBGP-PEER send-community
   neighbor IBGP-PEER maximum-routes 0
-  neighbor 4.4.4.4 peer group IBGP-PEER
-  neighbor 6.6.6.6 peer group IBGP-PEER
+  neighbor 1.0.0.1 peer group IBGP-PEER
+  neighbor 1.0.0.6 peer group IBGP-PEER
   !
   vlan 501
-      rd 2.2.2.2:10501
+      rd 1.0.0.4:10501
       route-target both 0.0.0.0:10501
       redistribute learned
       redistribute static
   !
   vlan 901
-      rd 2.2.2.2:10901
+      rd 1.0.0.4:10901
       route-target both 0.0.0.0:10901
       redistribute learned
       redistribute static
   !
   vpws SVC1-VPWS-SINGLE-2
-      rd 2.2.2.2:11101
+      rd 1.0.0.4:11101
       route-target import export evpn 0.0.0.0:11101
       mpls control-word
       label flow
@@ -753,21 +753,21 @@ router bgp 65000
       neighbor IBGP-PEER activate
   !
   vrf SVC6
-      rd 2.2.2.2:20601
+      rd 1.0.0.4:20601
       route-target import evpn 0.0.0.0:20601
       route-target export evpn 0.0.0.0:20601
       redistribute connected
       redistribute static
   !
   vrf SVC7
-      rd 2.2.2.2:10701
+      rd 1.0.0.4:10701
       route-target import vpn-ipv4 0.0.0.0:10701
       route-target export vpn-ipv4 0.0.0.0:10701
       redistribute connected
       redistribute static
   !
   vrf SVC8
-      rd 2.2.2.2:10801
+      rd 1.0.0.4:10801
       route-target import evpn 0.0.0.0:20801
       route-target import vpn-ipv4 0.0.0.0:20801
       route-target export evpn 0.0.0.0:20801
@@ -786,7 +786,7 @@ router traffic-engineering
   segment-routing
       rib system-colored-tunnel-rib
       !
-      policy endpoint 3.3.3.3 color 30
+      policy endpoint 1.0.0.3 color 30
         binding-sid 1000001
         name PE3_COLOR30
         !
@@ -802,7 +802,7 @@ router traffic-engineering
         color 230
 !
 router isis IGP
-  net 49.0000.0020.0200.2002.00
+  net 49.0000.0000.0100.0004.00
   is-type level-2
   timers local-convergence-delay protected-prefixes
   set-overload-bit on-startup 300

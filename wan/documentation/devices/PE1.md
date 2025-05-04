@@ -321,7 +321,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 6.6.6.6/32 |
+| Loopback0 | ROUTER_ID | default | 1.0.0.1/32 |
 
 ##### IPv6
 
@@ -342,8 +342,8 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 6.6.6.6/32
-   node-segment ipv4 index 6
+   ip address 1.0.0.1/32
+   node-segment ipv4 index 1
    isis enable IGP
    node-segment ipv4 index 106 flex-algo LOWLATENCY
    node-segment ipv4 index 206 flex-algo CHEAPBW
@@ -393,7 +393,7 @@ ip routing
 | Instance | IGP |
 | Net-ID | 49.0000.0060.0600.6006.00 |
 | Type | level-2 |
-| Router-ID | 6.6.6.6 |
+| Router-ID | 1.0.0.1 |
 | Log Adjacency Changes | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 2 seconds |
@@ -417,7 +417,7 @@ ip routing
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 6 | - |
+| Loopback0 | 1 | - |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -433,7 +433,7 @@ ip routing
 !
 router isis IGP
    net 49.0000.0060.0600.6006.00
-   router-id ipv4 6.6.6.6
+   router-id ipv4 1.0.0.1
    is-type level-2
    log-adjacency-changes
    timers local-convergence-delay 10000 protected-prefixes
@@ -457,7 +457,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 6.6.6.6 |
+| 65000 | 1.0.0.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -469,7 +469,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65000
-   router-id 6.6.6.6
+   router-id 1.0.0.1
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
 ```
@@ -598,7 +598,7 @@ interface Ethernet3
 interface Ethernet4
   description PE2
   no switchport
-  ip address 10.6.0.1/31
+  ip address 10.1.0.2/31
   bfd interval 50 min-rx 50 multiplier 3
   isis enable IGP
   isis network point-to-point
@@ -609,8 +609,8 @@ interface Ethernet16
   switchport access vlan 901
 !
 interface Loopback0
-  ip address 6.6.6.6/32
-  node-segment ipv4 index 6
+  ip address 1.0.0.1/32
+  node-segment ipv4 index 1
   node-segment ipv4 index 106 flex-algo LOWLATENCY
   node-segment ipv4 index 206 flex-algo CHEAPBW
   isis instance IGP
@@ -633,7 +633,7 @@ ip route 10.240.0.0/13 172.28.128.1
 ip route 172.16.0.0/12 172.28.128.1
 !
 router bgp 65000
-  router-id 6.6.6.6
+  router-id 1.0.0.1
   update wait-install
   maximum-paths 4 ecmp 4
   neighbor EBGP-PEER peer group
@@ -644,17 +644,17 @@ router bgp 65000
   neighbor IBGP-PEER update-source Loopback0
   neighbor IBGP-PEER send-community
   neighbor IBGP-PEER maximum-routes 0
-  neighbor 1.1.1.1 peer group IBGP-PEER
-  neighbor 2.2.2.2 peer group IBGP-PEER
-  neighbor 3.3.3.3 peer group IBGP-PEER
-  neighbor 4.4.4.4 peer group IBGP-PEER
-  neighbor 5.5.5.5 peer group IBGP-PEER
+  neighbor 1.0.0.2 peer group IBGP-PEER
+  neighbor 1.0.0.3 peer group IBGP-PEER
+  neighbor 1.0.0.4 peer group IBGP-PEER
+  neighbor 1.0.0.5 peer group IBGP-PEER
+  neighbor 1.0.0.6 peer group IBGP-PEER
   neighbor 100.1.0.1 peer group EBGP-PEER
   neighbor 192.168.9.10 remote-as 1000
   neighbor 192.168.9.10 bfd
   !
   vlan 901
-      rd 6.6.6.6:10901
+      rd 1.0.0.1:10901
       route-target both 0.0.0.0:10901
       redistribute learned
       redistribute static
@@ -686,7 +686,7 @@ router traffic-engineering
         color 230
 !
 router isis IGP
-  net 49.0000.0060.0600.6006.00
+  net 49.0000.0000.0100.0001.00
   is-type level-2
   timers local-convergence-delay protected-prefixes
   set-overload-bit on-startup 300

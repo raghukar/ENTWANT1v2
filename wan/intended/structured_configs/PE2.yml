@@ -57,27 +57,27 @@ daemon_terminattr:
 enable_password:
   disabled: true
 eos_cli: "no spanning-tree vlan-id 901-902\n!\nvlan 902\n!\ninterface Ethernet1\n  description INTERNET_AGGREGATOR\n  no switchport\n
-  \ ip address 100.2.0.0/31\n!\ninterface Ethernet3\n  description PE1\n  no switchport\n  ip address 10.6.0.0/31\n  bfd interval 50
+  \ ip address 100.2.0.0/31\n!\ninterface Ethernet3\n  description PE1\n  no switchport\n  ip address 10.1.0.3/31\n  bfd interval 50
   min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
-  Ethernet4\n  description PE6\n  no switchport\n  ip address 10.5.0.1/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n
+  Ethernet4\n  description PE6\n  no switchport\n  ip address 10.1.0.4/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n
   \ isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet16\n  switchport access
-  vlan 901\n  switchport mode trunk\n!\ninterface Loopback0\n  ip address 5.5.5.5/32\n  node-segment ipv4 index 5\n  node-segment ipv4
+  vlan 901\n  switchport mode trunk\n!\ninterface Loopback0\n  ip address 1.0.0.2/32\n  node-segment ipv4 index 2\n  node-segment ipv4
   index 105 flex-algo LOWLATENCY\n  node-segment ipv4 index 205 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan902\n  ip address
   192.168.92.1/24\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip
-  route 172.16.0.0/12 172.28.128.1\n!\nrouter bgp 65000\n  router-id 5.5.5.5\n  update wait-install\n  maximum-paths 4 ecmp 4\n  neighbor
+  route 172.16.0.0/12 172.28.128.1\n!\nrouter bgp 65000\n  router-id 1.0.0.2\n  update wait-install\n  maximum-paths 4 ecmp 4\n  neighbor
   EBGP-PEER peer group\n  neighbor EBGP-PEER remote-as 200\n  neighbor EBGP-PEER maximum-routes 0\n  neighbor IBGP-PEER peer group\n
   \ neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER bfd\n  neighbor IBGP-PEER
-  session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 4.4.4.4 peer
-  group IBGP-PEER\n  neighbor 6.6.6.6 peer group IBGP-PEER\n  neighbor 100.2.0.1 peer group EBGP-PEER\n  neighbor 192.168.9.10 bfd\n
-  \ neighbor 192.168.92.10 remote-as 1000\n  neighbor 192.168.92.10 bfd\n  !\n  vlan 901\n      rd 5.5.5.5:10901\n      route-target
+  session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 1.0.0.1 peer
+  group IBGP-PEER\n  neighbor 1.0.0.6 peer group IBGP-PEER\n  neighbor 100.2.0.1 peer group EBGP-PEER\n  neighbor 192.168.9.10 bfd\n
+  \ neighbor 192.168.92.10 remote-as 1000\n  neighbor 192.168.92.10 bfd\n  !\n  vlan 901\n      rd 1.0.0.2:10901\n      route-target
   both 0.0.0.0:10901\n      redistribute learned\n      redistribute static\n      redistribute router-mac system default-gateway\n
-  \ !\n  vlan 902\n      rd 5.5.5.5:10902\n      route-target both 0.0.0.0:10902\n      redistribute learned\n      redistribute static\n
+  \ !\n  vlan 902\n      rd 1.0.0.2:10902\n      route-target both 0.0.0.0:10902\n      redistribute learned\n      redistribute static\n
   \     redistribute router-mac system default-gateway\n  !\n  address-family evpn\n      neighbor default encapsulation mpls next-hop-self
   source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n  address-family ipv4\n      bgp additional-paths install\n      neighbor
   IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER additional-paths send limit 2\n      neighbor
   192.168.92.10 activate\n      neighbor EBGP-PEER activate\n      redistribute connected\n  !\n  session tracker ROUTE_REFLECTORS\n
   \     recovery delay 600 seconds\n!\nrouter general\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo 128 LOWLATENCY\n
-  \       metric min-delay\n        color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0050.0500.5005.00\n
+  \       metric min-delay\n        color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0000.0100.0002.00\n
   \ is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n
   \ timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing
   mpls\n      no shutdown\n      flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!\nend"
@@ -95,7 +95,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 5.5.5.5/32
+  ip_address: 1.0.0.2/32
   isis_enable: IGP
   isis_passive: false
   node_segment:
@@ -130,7 +130,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65000'
-  router_id: 5.5.5.5
+  router_id: 1.0.0.2
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -143,7 +143,7 @@ router_bgp:
 router_isis:
   instance: IGP
   net: 49.0000.0050.0500.5005.00
-  router_id: 5.5.5.5
+  router_id: 1.0.0.2
   is_type: level-2
   log_adjacency_changes: true
   timers:
