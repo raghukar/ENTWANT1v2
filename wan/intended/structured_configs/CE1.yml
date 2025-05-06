@@ -62,9 +62,7 @@ eos_cli: "no router bgp 1000\nno interface Loopback0\n!\nno spanning-tree vlan-i
   Ethernet2\n  switchport trunk allowed vlan 101,501,701,801,901,1500\n  switchport mode trunk\n!\ninterface Ethernet5\n  switchport
   trunk allowed vlan 101,501,701,801,901,1500\n  switchport mode trunk\n!\ninterface Ethernet47\n  switchport access vlan 1999\n  switchport
   trunk allowed vlan none\n!\ninterface Vlan701\n  ip address 192.168.107.99/24\n!\ninterface Vlan1999\n  ipv6 address 2001::2/64\n
-  \ no vrrp 1 peer authentication\n  vrrp 1 ipv6 2001::10\n!\nipv6 access-list BLOCK\n  10 deny ipv6 any any\n!\nipv6 unicast-routing\n!\nip
-  route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12
-  172.28.128.1\n!"
+  \ no vrrp 1 peer authentication\n  vrrp 1 ipv6 2001::10\n!\nipv6 unicast-routing\n!"
 hostname: CE1
 ip_name_servers:
 - ip_address: 169.254.169.254

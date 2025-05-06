@@ -60,53 +60,50 @@ eos_cli: "cfm\n  profile POC\n      continuity-check tx-interval 10 milliseconds
   up\n        profile POC\n        !\n        end-point 1\n!\ntunnel-ribs\n  tunnel-rib system-tunnel-rib\n      source-protocol nexthop-group\n
   \     source-protocol rsvp-ler\n      source-protocol bgp labeled-unicast\n      source-protocol static\n      source-protocol ldp\n
   \     source-protocol isis flex-algo preference 100\n      source-protocol isis segment-routing\n!\nvlan 501\n  name SVC4-L2EVPN\n!\nvlan
-  601\n  name SVC6\n!\nvlan 1101\n!\nvrf instance SVC6\n!\nvrf instance SVC7\n!\nvrf instance SVC8\n!\ngroup bgp TEST\n  exit\n!\nmanagement
-  security\n  session shared-secret profile KEYCHAIN\n      secret NUM1 7 $1c$G8BQN0ezkiJOX2cuAYpsEA== receive-lifetime infinite transmit-lifetime
-  infinite\n!\ninterface Ethernet1\n  description PE1\n  no switchport\n  ip address 10.1.0.0/31\n  bfd interval 50 min-rx 50 multiplier
-  3\n  isis enable IGP\n  isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet2\n
-  \ description PE4\n  no switchport\n  ip address 10.1.0.11/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis
-  network point-to-point\n  isis authentication mode shared-secret profile KEYCHAIN algorithm md5\n  traffic-engineering min-delay static
-  10 milliseconds\n!\ninterface Ethernet5\n  description CE1\n  load-interval 5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n
-  \ evpn ethernet-segment\n      identifier 0020:2000:0000:0000:0000\n      route-target import 20:20:00:00:00:00\n  !\n!\ninterface
-  Ethernet5.101\n  description SVC1-VPWS-SINGLE-2\n  !\n  encapsulation vlan\n      client dot1q 101\n!\ninterface Ethernet5.301\n  description
-  SVC3-VPWS-DOUBLE2\n  !\n  encapsulation vlan\n      client dot1q 301\n!\ninterface Ethernet5.501\n  description SVC4-L2EVPN\n  vlan
-  id 501\n  !\n  encapsulation vlan\n    client unmatched\n  !\n  evpn ethernet-segment\n      identifier 0020:0000:0000:0000:0501\n
-  \     route-target import 00:20:00:00:05:01\n  !\n!\ninterface Ethernet5.601\n  description SVC6-L3EVPN\n  vlan id 601\n  !\n  encapsulation
-  vlan\n      client dot1q 601\n!\ninterface Ethernet5.701\n  description SVC7-4364\n  encapsulation dot1q vlan 701\n  vrf SVC7\n  ip
-  address 192.168.7.1/24\n!\ninterface Ethernet5.801\n  description SVC8-INTERWORKING\n  encapsulation dot1q vlan 801\n  vrf SVC8\n
-  \ ip address 192.168.8.1/24\n!\ninterface Ethernet5.1101\n  description SVC10-GATEWAY\n  vlan id 1101\n  !\n  encapsulation vlan\n
-  \     client dot1q 1101\n!\ninterface Loopback0\n  ip address 1.0.0.3/32\n  node-segment ipv4 index 3\n  node-segment ipv4 index 101
-  flex-algo LOWLATENCY\n  node-segment ipv4 index 201 flex-algo CHEAPBW\n  isis enable IGP\n!\ninterface Vlan601\n  vrf SVC6\n  ip address
-  192.168.6.1/24\n!\nip virtual-router mac-address 00:1c:73:00:00:00\n!\nip routing vrf SVC6\nip routing vrf SVC7\nip routing vrf SVC8\n!\nip
-  community-list GSHUT permit GSHUT\n!\nmonitor session 1 source Ethernet5\n!\nip route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16
-  172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\n!\npatch panel\n  patch subintpo5.101\n      connector
-  1 interface Ethernet5.101\n      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1\n  !\n  patch subintpo5.201\n      connector
-  1 interface Ethernet5.201\n      connector 2 pseudowire bgp vpws SVC2-VPWS-DOUBLE-1 pseudowire pw1\n  !\n  patch subintpo5.301\n      connector
-  1 interface Ethernet5.301\n      connector 2 pseudowire bgp vpws SVC3-VPWS-DOUBLE-2 pseudowire pw1\n!\npolicy-map type quality-of-service
-  POLICE_100MBPS\n  class class-default\n!\nroute-map BLOCK_ALL deny 5\n!\nroute-map BLOCK_ALL permit 10\n!\nroute-map BLOCK_IN_MAINT
-  deny 5\n  match community GSHUT\n!\nroute-map BLOCK_IN_MAINT permit 10\n!\nrouter bgp 65000\n  router-id 1.0.0.3\n  maximum-paths
-  4 ecmp 4\n  neighbor IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor
-  IBGP-PEER bfd\n  neighbor IBGP-PEER session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes
-  0\n  neighbor 1.0.0.1 peer group IBGP-PEER\n  neighbor 1.0.0.6 peer group IBGP-PEER\n  !\n  vlan 501\n      rd 1.0.0.3:10501\n      route-target
-  both 0.0.0.0:10501\n      redistribute learned\n      redistribute static\n  !\n  vlan 1101\n      rd 1.0.0.3:1101\n      route-target
-  both 0.0.0.0:1101\n      redistribute learned\n  !\n  vpws SVC1-VPWS-SINGLE-2\n      rd 1.0.0.3:11101\n      route-target import export
-  evpn 0.0.0.0:11101\n      mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 11101 remote
-  21101\n  !\n  vpws SVC2-VPWS-DOUBLE-1\n      rd 1.0.0.3:10201\n      route-target import export evpn 0.0.0.0:10201\n      mpls control-word\n
-  \     label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 10201 remote 20102\n  !\n  vpws SVC3-VPWS-DOUBLE-2\n      rd
-  1.0.0.3:10301\n      route-target import export evpn 0.0.0.0:10301\n      mpls control-word\n      label flow\n      !\n      pseudowire
-  pw1\n        evpn vpws id local 10301 remote 20301\n  !\n  address-family evpn\n      neighbor default encapsulation mpls next-hop-self
-  source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n  address-family ipv4\n      neighbor IBGP-PEER activate\n      neighbor
-  IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER additional-paths send limit 2\n      redistribute connected\n  !\n  address-family
-  vpn-ipv4\n      neighbor IBGP-PEER activate\n  !\n  vrf SVC6\n      rd 1.0.0.3:20601\n      route-target import evpn 0.0.0.0:20601\n
-  \     route-target export evpn 0.0.0.0:20601\n      redistribute connected\n      redistribute static\n  !\n  vrf SVC7\n      rd 1.0.0.3:10701\n
-  \     route-target import vpn-ipv4 0.0.0.0:10701\n      route-target export vpn-ipv4 0.0.0.0:10701\n      redistribute connected\n
-  \     redistribute static\n  !\n  vrf SVC8\n      rd 1.0.0.3:10801\n      route-target import vpn-ipv4 0.0.0.0:20801\n      route-target
-  export vpn-ipv4 0.0.0.0:20801\n      redistribute connected\n      redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n
-  \     recovery delay 600 seconds\n!\nrouter general\n  !\n  vrf SVC6\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo
-  128 LOWLATENCY\n        metric min-delay\n        color 130\n      !\n      flex-algo 130 BLAH\n      !\n      flex-algo 255 CHEAPBW\n
-  \       color 230\n!\nrouter isis IGP\n  net 49.0000.0000.0100.0003.00\n  is-type level-2\n  timers local-convergence-delay protected-prefixes\n
-  \ set-overload-bit on-startup 300\n  spf-interval 2 10 100\n  timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute
-  ti-lfa mode node-protection\n  !\n  segment-routing mpls\n      no shutdown\n      segment path verification prefix-segment adjacency-segment\n
+  601\n  name SVC6\n!\nvlan 1101\n!\nvrf instance SVC6\n!\nvrf instance SVC7\n!\nvrf instance SVC8\n!\nmanagement security\n  session
+  shared-secret profile KEYCHAIN\n      secret NUM1 7 $1c$G8BQN0ezkiJOX2cuAYpsEA== receive-lifetime infinite transmit-lifetime infinite\n!\ninterface
+  Ethernet1\n  description PE1\n  no switchport\n  ip address 10.1.0.0/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n
+  \ isis network point-to-point\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface Ethernet2\n  description PE4\n
+  \ no switchport\n  ip address 10.1.0.11/31\n  bfd interval 50 min-rx 50 multiplier 3\n  isis enable IGP\n  isis network point-to-point\n
+  \ isis authentication mode shared-secret profile KEYCHAIN algorithm md5\n  traffic-engineering min-delay static 10 milliseconds\n!\ninterface
+  Ethernet5\n  description CE1\n  load-interval 5\n  bgp session tracker ROUTE_REFLECTORS\n  no switchport\n  evpn ethernet-segment\n
+  \     identifier 0020:2000:0000:0000:0000\n      route-target import 20:20:00:00:00:00\n  !\n!\ninterface Ethernet5.101\n  description
+  SVC1-VPWS-SINGLE-2\n  !\n  encapsulation vlan\n      client dot1q 101\n!\ninterface Ethernet5.301\n  description SVC3-VPWS-DOUBLE2\n
+  \ !\n  encapsulation vlan\n      client dot1q 301\n!\ninterface Ethernet5.501\n  description SVC4-L2EVPN\n  vlan id 501\n  !\n  encapsulation
+  vlan\n    client unmatched\n  !\n  evpn ethernet-segment\n      identifier 0020:0000:0000:0000:0501\n      route-target import 00:20:00:00:05:01\n
+  \ !\n!\ninterface Ethernet5.601\n  description SVC6-L3EVPN\n  vlan id 601\n  !\n  encapsulation vlan\n      client dot1q 601\n!\ninterface
+  Ethernet5.701\n  description SVC7-4364\n  encapsulation dot1q vlan 701\n  vrf SVC7\n  ip address 192.168.7.1/24\n!\ninterface Ethernet5.801\n
+  \ description SVC8-INTERWORKING\n  encapsulation dot1q vlan 801\n  vrf SVC8\n  ip address 192.168.8.1/24\n!\ninterface Ethernet5.1101\n
+  \ description SVC10-GATEWAY\n  vlan id 1101\n  !\n  encapsulation vlan\n      client dot1q 1101\n!\ninterface Loopback0\n  ip address
+  1.0.0.3/32\n  node-segment ipv4 index 3\n  node-segment ipv4 index 101 flex-algo LOWLATENCY\n  node-segment ipv4 index 201 flex-algo
+  CHEAPBW\n  isis enable IGP\n!\ninterface Vlan601\n  vrf SVC6\n  ip address 192.168.6.1/24\n!\nip virtual-router mac-address 00:1c:73:00:00:00\n!\nip
+  routing vrf SVC6\nip routing vrf SVC7\nip routing vrf SVC8\n!\npatch panel\n  patch subintpo5.101\n      connector 1 interface Ethernet5.101\n
+  \     connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1\n  !\n  patch subintpo5.201\n      connector 1 interface Ethernet5.201\n
+  \     connector 2 pseudowire bgp vpws SVC2-VPWS-DOUBLE-1 pseudowire pw1\n  !\n  patch subintpo5.301\n      connector 1 interface Ethernet5.301\n
+  \     connector 2 pseudowire bgp vpws SVC3-VPWS-DOUBLE-2 pseudowire pw1\n!\npolicy-map type quality-of-service POLICE_100MBPS\n  class
+  class-default\n!\nrouter bgp 65000\n  router-id 1.0.0.3\n  maximum-paths 4 ecmp 4\n  neighbor IBGP-PEER peer group\n  neighbor IBGP-PEER
+  remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER bfd\n  neighbor IBGP-PEER session tracker ROUTE_REFLECTORS\n
+  \ neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 1.0.0.1 peer group IBGP-PEER\n  neighbor 1.0.0.6
+  peer group IBGP-PEER\n  !\n  vlan 501\n      rd 1.0.0.3:10501\n      route-target both 0.0.0.0:10501\n      redistribute learned\n
+  \     redistribute static\n  !\n  vlan 1101\n      rd 1.0.0.3:1101\n      route-target both 0.0.0.0:1101\n      redistribute learned\n
+  \ !\n  vpws SVC1-VPWS-SINGLE-2\n      rd 1.0.0.3:11101\n      route-target import export evpn 0.0.0.0:11101\n      mpls control-word\n
+  \     label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 11101 remote 21101\n  !\n  vpws SVC2-VPWS-DOUBLE-1\n      rd
+  1.0.0.3:10201\n      route-target import export evpn 0.0.0.0:10201\n      mpls control-word\n      label flow\n      !\n      pseudowire
+  pw1\n        evpn vpws id local 10201 remote 20102\n  !\n  vpws SVC3-VPWS-DOUBLE-2\n      rd 1.0.0.3:10301\n      route-target import
+  export evpn 0.0.0.0:10301\n      mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 10301
+  remote 20301\n  !\n  address-family evpn\n      neighbor default encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor
+  IBGP-PEER activate\n  !\n  address-family ipv4\n      neighbor IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n
+  \     neighbor IBGP-PEER additional-paths send limit 2\n      redistribute connected\n  !\n  address-family vpn-ipv4\n      neighbor
+  IBGP-PEER activate\n  !\n  vrf SVC6\n      rd 1.0.0.3:20601\n      route-target import evpn 0.0.0.0:20601\n      route-target export
+  evpn 0.0.0.0:20601\n      redistribute connected\n      redistribute static\n  !\n  vrf SVC7\n      rd 1.0.0.3:10701\n      route-target
+  import vpn-ipv4 0.0.0.0:10701\n      route-target export vpn-ipv4 0.0.0.0:10701\n      redistribute connected\n      redistribute
+  static\n  !\n  vrf SVC8\n      rd 1.0.0.3:10801\n      route-target import vpn-ipv4 0.0.0.0:20801\n      route-target export vpn-ipv4
+  0.0.0.0:20801\n      redistribute connected\n      redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n      recovery delay
+  600 seconds\n!\nrouter general\n  !\n  vrf SVC6\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric
+  min-delay\n        color 130\n      !\n      flex-algo 130 BLAH\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter
+  isis IGP\n  net 49.0000.0000.0100.0003.00\n  is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit
+  on-startup 300\n  spf-interval 2 10 100\n  timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa
+  mode node-protection\n  !\n  segment-routing mpls\n      no shutdown\n      segment path verification prefix-segment adjacency-segment\n
   \     flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!\nend"
 hostname: PE3
 ip_igmp_snooping:

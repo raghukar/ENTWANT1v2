@@ -77,9 +77,6 @@ host_custom_structured_eos_cli: |-
   !
   vrf instance SVC8
   !
-  group bgp TEST
-    exit
-  !
   management security
     session shared-secret profile KEYCHAIN
         secret NUM1 7 $1c$G8BQN0ezkiJOX2cuAYpsEA== receive-lifetime infinite transmit-lifetime infinite
@@ -180,15 +177,6 @@ host_custom_structured_eos_cli: |-
   ip routing vrf SVC7
   ip routing vrf SVC8
   !
-  ip community-list GSHUT permit GSHUT
-  !
-  monitor session 1 source Ethernet5
-  !
-  ip route 10.80.0.0/12 172.28.128.1
-  ip route 10.239.0.0/16 172.28.128.1
-  ip route 10.240.0.0/13 172.28.128.1
-  ip route 172.16.0.0/12 172.28.128.1
-  !
   patch panel
     patch subintpo5.101
         connector 1 interface Ethernet5.101
@@ -204,15 +192,6 @@ host_custom_structured_eos_cli: |-
   !
   policy-map type quality-of-service POLICE_100MBPS
     class class-default
-  !
-  route-map BLOCK_ALL deny 5
-  !
-  route-map BLOCK_ALL permit 10
-  !
-  route-map BLOCK_IN_MAINT deny 5
-    match community GSHUT
-  !
-  route-map BLOCK_IN_MAINT permit 10
   !
   router bgp 65000
     router-id 1.0.0.3

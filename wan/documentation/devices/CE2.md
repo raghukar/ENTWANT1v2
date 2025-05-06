@@ -605,10 +605,6 @@ interface Vlan991
 !
 ip as-path access-list SELF permit ^$ any
 !
-ip route 10.80.0.0/12 172.28.128.1
-ip route 10.239.0.0/16 172.28.128.1
-ip route 10.240.0.0/13 172.28.128.1
-ip route 172.16.0.0/12 172.28.128.1
 ip route 100.200.10.20/30 192.168.9.1
 !
 route-map SELF_ONLY permit 10
@@ -629,7 +625,5 @@ router bgp 1000
   address-family ipv4
     neighbor 192.168.9.1 activate
     neighbor 192.168.92.1 activate
-!
-router general
 !
 ```

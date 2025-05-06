@@ -597,14 +597,6 @@ interface Vlan1999
   no vrrp 1 peer authentication
   vrrp 1 ipv6 2001::10
 !
-ipv6 access-list BLOCK
-  10 deny ipv6 any any
-!
 ipv6 unicast-routing
-!
-ip route 10.80.0.0/12 172.28.128.1
-ip route 10.239.0.0/16 172.28.128.1
-ip route 10.240.0.0/13 172.28.128.1
-ip route 172.16.0.0/12 172.28.128.1
 !
 ```

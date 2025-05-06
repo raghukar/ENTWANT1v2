@@ -81,41 +81,39 @@ eos_cli: "vlan 501\n  name SVC4-L2EVPN\n!\nvlan 601\n  name SVC5-L3EVPN\n!\nvlan
   \     route-target import 10:10:01:00:00:00\n!\ninterface Loopback0\n  ip address 1.0.0.6/32\n  node-segment ipv4 index 6\n  node-segment
   ipv4 index 104 flex-algo LOWLATENCY\n  node-segment ipv4 index 204 flex-algo CHEAPBW\n  isis instance IGP\n!\ninterface Vlan601\n
   \ vrf SVC6\n  ip address 192.168.116.1/24\n!\nip virtual-router mac-address 00:1c:73:00:00:00\n!\nip routing vrf SVC6\n!\nip routing
-  vrf SVC7\n!\nip routing vrf SVC8\n!\nip extcommunity-list L3EVPN_COM permit rt 0.0.0.0:20601\n!\nip route 10.80.0.0/12 172.28.128.1\nip
-  route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12 172.28.128.1\n!\npatch panel\n  patch
-  subintf-100-101\n      connector 1 interface Ethernet3.101\n      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE pseudowire pw1\n
-  \ !\n  patch subintf-100-201\n      connector 1 interface Ethernet3.201\n      connector 2 pseudowire bgp vpws SVC2-VPWS-DOUBLE-1
-  pseudowire pw1\n  !\n  patch subintf-100-301\n      connector 1 interface Ethernet3.301\n      connector 2 pseudowire bgp vpws SVC3-VPWS-DOUBLE-2
-  pseudowire pw1\n  !\n  patch subintf-101-101\n      connector 1 interface Ethernet4.101\n      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2
-  pseudowire pw1\n!\nroute-map COLOR_L2VPN permit 11\n  match extcommunity L3EVPN_COM\n  set extcommunity color 130 additive\n!\nroute-map
-  COLOR_L2VPN permit 20\n!\nrouter bgp 65000\n  router-id 1.0.0.6\n  maximum-paths 4 ecmp 4\n  bgp additional-paths send limit 2\n  neighbor
-  IBGP-PEER peer group\n  neighbor IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER route-reflector-client\n
-  \ neighbor IBGP-PEER session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n
-  \ neighbor 1.0.0.1 peer group IBGP-PEER\n  neighbor 1.0.0.2 peer group IBGP-PEER\n  neighbor 1.0.0.3 peer group IBGP-PEER\n  neighbor
-  1.0.0.4 peer group IBGP-PEER\n  neighbor 1.0.0.5 peer group IBGP-PEER\n  !\n  vlan 1101\n      rd 1.0.0.6:1101\n      route-target
-  both 0.0.0.0:21101\n      redistribute learned\n  !\n  vlan 501\n      rd 1.0.0.6:10501\n      route-target both 0.0.0.0:10501\n      redistribute
-  learned\n  !\n  vlan 901\n      rd 1.0.0.6:10901\n      route-target both 0.0.0.0:10901\n      redistribute learned\n      redistribute
-  static\n  !\n  vlan 902\n      rd 1.0.0.6:10902\n      route-target both 0.0.0.0:10902\n      redistribute learned\n      redistribute
-  static\n  !\n  vpws SVC1-VPWS-SINGLE\n      rd 1.0.0.6:10101\n      route-target import export evpn 0.0.0.0:10101\n      mpls control-word\n
-  \     label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20101 remote 10101\n  !\n  vpws SVC1-VPWS-SINGLE-2\n      rd
-  1.0.0.6:11101\n      route-target import export evpn 0.0.0.0:11101\n      mpls control-word\n      label flow\n      !\n      pseudowire
-  pw1\n        evpn vpws id local 21101 remote 11101\n  !\n  vpws SVC2-VPWS-DOUBLE-1\n      rd 1.0.0.6:10201\n      route-target import
-  export evpn 0.0.0.0:10201\n      mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20102
-  remote 10201\n  !\n  vpws SVC3-VPWS-DOUBLE-2\n      rd 1.0.0.6:10301\n      route-target import export evpn 0.0.0.0:10301\n      mpls
-  control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20301 remote 10301\n  !\n  address-family
-  evpn\n      neighbor default encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n
-  \ address-family ipv4\n      neighbor IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER
-  additional-paths send limit 2\n      redistribute connected\n  !\n  address-family vpn-ipv4\n      neighbor IBGP-PEER activate\n  !\n
-  \ vrf SVC6\n      rd 1.0.0.6:20601\n      route-target import evpn 0.0.0.0:20601\n      route-target export evpn 0.0.0.0:20601\n      redistribute
-  connected\n      redistribute static\n  !\n  vrf SVC7\n      rd 1.0.0.6:10701\n      route-target import vpn-ipv4 0.0.0.0:10701\n
-  \     route-target export vpn-ipv4 0.0.0.0:10701\n      redistribute connected\n      redistribute static\n  !\n  vrf SVC8\n      rd
-  1.0.0.6:10801\n      route-target import evpn 0.0.0.0:20801\n      route-target export evpn 0.0.0.0:20801\n      redistribute connected\n
-  \     redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n      recovery delay 600 seconds\n!\nrouter general\n!\nrouter
-  traffic-engineering\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric min-delay\n        color 130\n      !\n      flex-algo
-  255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0000.0100.0006.00\n  is-type level-2\n  timers local-convergence-delay
-  protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n  timers lsp out-delay 2000\n  !\n  address-family
-  ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing mpls\n      no shutdown\n      flex-algo CHEAPBW
-  level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
+  vrf SVC7\n!\nip routing vrf SVC8\n!\nip extcommunity-list L3EVPN_COM permit rt 0.0.0.0:20601\n!\npatch panel\n  patch subintf-100-101\n
+  \     connector 1 interface Ethernet3.101\n      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE pseudowire pw1\n  !\n  patch subintf-100-201\n
+  \     connector 1 interface Ethernet3.201\n      connector 2 pseudowire bgp vpws SVC2-VPWS-DOUBLE-1 pseudowire pw1\n  !\n  patch subintf-100-301\n
+  \     connector 1 interface Ethernet3.301\n      connector 2 pseudowire bgp vpws SVC3-VPWS-DOUBLE-2 pseudowire pw1\n  !\n  patch subintf-101-101\n
+  \     connector 1 interface Ethernet4.101\n      connector 2 pseudowire bgp vpws SVC1-VPWS-SINGLE-2 pseudowire pw1\n!\nroute-map COLOR_L2VPN
+  permit 11\n  match extcommunity L3EVPN_COM\n  set extcommunity color 130 additive\n!\nroute-map COLOR_L2VPN permit 20\n!\nrouter bgp
+  65000\n  router-id 1.0.0.6\n  maximum-paths 4 ecmp 4\n  bgp additional-paths send limit 2\n  neighbor IBGP-PEER peer group\n  neighbor
+  IBGP-PEER remote-as 65000\n  neighbor IBGP-PEER update-source Loopback0\n  neighbor IBGP-PEER route-reflector-client\n  neighbor IBGP-PEER
+  session tracker ROUTE_REFLECTORS\n  neighbor IBGP-PEER send-community\n  neighbor IBGP-PEER maximum-routes 0\n  neighbor 1.0.0.1 peer
+  group IBGP-PEER\n  neighbor 1.0.0.2 peer group IBGP-PEER\n  neighbor 1.0.0.3 peer group IBGP-PEER\n  neighbor 1.0.0.4 peer group IBGP-PEER\n
+  \ neighbor 1.0.0.5 peer group IBGP-PEER\n  !\n  vlan 1101\n      rd 1.0.0.6:1101\n      route-target both 0.0.0.0:21101\n      redistribute
+  learned\n  !\n  vlan 501\n      rd 1.0.0.6:10501\n      route-target both 0.0.0.0:10501\n      redistribute learned\n  !\n  vlan 901\n
+  \     rd 1.0.0.6:10901\n      route-target both 0.0.0.0:10901\n      redistribute learned\n      redistribute static\n  !\n  vlan
+  902\n      rd 1.0.0.6:10902\n      route-target both 0.0.0.0:10902\n      redistribute learned\n      redistribute static\n  !\n  vpws
+  SVC1-VPWS-SINGLE\n      rd 1.0.0.6:10101\n      route-target import export evpn 0.0.0.0:10101\n      mpls control-word\n      label
+  flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20101 remote 10101\n  !\n  vpws SVC1-VPWS-SINGLE-2\n      rd 1.0.0.6:11101\n
+  \     route-target import export evpn 0.0.0.0:11101\n      mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn
+  vpws id local 21101 remote 11101\n  !\n  vpws SVC2-VPWS-DOUBLE-1\n      rd 1.0.0.6:10201\n      route-target import export evpn 0.0.0.0:10201\n
+  \     mpls control-word\n      label flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20102 remote 10201\n  !\n  vpws
+  SVC3-VPWS-DOUBLE-2\n      rd 1.0.0.6:10301\n      route-target import export evpn 0.0.0.0:10301\n      mpls control-word\n      label
+  flow\n      !\n      pseudowire pw1\n        evpn vpws id local 20301 remote 10301\n  !\n  address-family evpn\n      neighbor default
+  encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor IBGP-PEER activate\n  !\n  address-family ipv4\n      neighbor
+  IBGP-PEER activate\n      neighbor IBGP-PEER additional-paths receive\n      neighbor IBGP-PEER additional-paths send limit 2\n      redistribute
+  connected\n  !\n  address-family vpn-ipv4\n      neighbor IBGP-PEER activate\n  !\n  vrf SVC6\n      rd 1.0.0.6:20601\n      route-target
+  import evpn 0.0.0.0:20601\n      route-target export evpn 0.0.0.0:20601\n      redistribute connected\n      redistribute static\n
+  \ !\n  vrf SVC7\n      rd 1.0.0.6:10701\n      route-target import vpn-ipv4 0.0.0.0:10701\n      route-target export vpn-ipv4 0.0.0.0:10701\n
+  \     redistribute connected\n      redistribute static\n  !\n  vrf SVC8\n      rd 1.0.0.6:10801\n      route-target import evpn 0.0.0.0:20801\n
+  \     route-target export evpn 0.0.0.0:20801\n      redistribute connected\n      redistribute static\n  !\n  session tracker ROUTE_REFLECTORS\n
+  \     recovery delay 600 seconds\n!\nrouter traffic-engineering\n  flex-algo\n      flex-algo 128 LOWLATENCY\n        metric min-delay\n
+  \       color 130\n      !\n      flex-algo 255 CHEAPBW\n        color 230\n!\nrouter isis IGP\n  net 49.0000.0000.0100.0006.00\n
+  \ is-type level-2\n  timers local-convergence-delay protected-prefixes\n  set-overload-bit on-startup 300\n  spf-interval 2 10 100\n
+  \ timers lsp out-delay 2000\n  !\n  address-family ipv4 unicast\n      fast-reroute ti-lfa mode node-protection\n  !\n  segment-routing
+  mpls\n      no shutdown\n      flex-algo CHEAPBW level-2 advertised\n      flex-algo LOWLATENCY level-2 advertised\n!"
 hostname: PE6
 ip_igmp_snooping:
   globally_enabled: true

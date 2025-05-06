@@ -63,12 +63,11 @@ eos_cli: "no interface Loopback0\n!\nrouter bgp 1000\n  no redistribute connecte
   trunk allowed vlan 101,501,601,901-902,1101\n  switchport mode trunk\n!\ninterface Ethernet5\n  switchport trunk allowed vlan 101,501,601,901,991,1101\n
   \ switchport mode trunk\n!\ninterface Vlan601\n!\ninterface Vlan901\n  ip address 192.168.9.10/24\n!\ninterface Vlan902\n  no autostate\n
   \ ip address 192.168.92.10/24\n!\ninterface Vlan991\n  ip address 192.168.99.1/24\n!\nip as-path access-list SELF permit ^$ any\n!\nip
-  route 10.80.0.0/12 172.28.128.1\nip route 10.239.0.0/16 172.28.128.1\nip route 10.240.0.0/13 172.28.128.1\nip route 172.16.0.0/12
-  172.28.128.1\nip route 100.200.10.20/30 192.168.9.1\n!\nroute-map SELF_ONLY permit 10\n  match as-path SELF\n!\nrouter bgp 1000\n
-  \ maximum-paths 2\n  bgp additional-paths install ecmp-primary\n  neighbor 192.168.9.1 remote-as 65000\n  neighbor 192.168.9.1 bfd\n
-  \ neighbor 192.168.9.1 route-map SELF_ONLY out\n  neighbor 192.168.9.1 maximum-routes 0\n  neighbor 192.168.92.1 remote-as 65000\n
-  \ neighbor 192.168.92.1 bfd\n  neighbor 192.168.92.1 route-map SELF_ONLY out\n  neighbor 192.168.92.1 maximum-routes 0\n  redistribute
-  connected\n  address-family ipv4\n    neighbor 192.168.9.1 activate\n    neighbor 192.168.92.1 activate\n!\nrouter general\n!"
+  route 100.200.10.20/30 192.168.9.1\n!\nroute-map SELF_ONLY permit 10\n  match as-path SELF\n!\nrouter bgp 1000\n  maximum-paths 2\n
+  \ bgp additional-paths install ecmp-primary\n  neighbor 192.168.9.1 remote-as 65000\n  neighbor 192.168.9.1 bfd\n  neighbor 192.168.9.1
+  route-map SELF_ONLY out\n  neighbor 192.168.9.1 maximum-routes 0\n  neighbor 192.168.92.1 remote-as 65000\n  neighbor 192.168.92.1
+  bfd\n  neighbor 192.168.92.1 route-map SELF_ONLY out\n  neighbor 192.168.92.1 maximum-routes 0\n  redistribute connected\n  address-family
+  ipv4\n    neighbor 192.168.9.1 activate\n    neighbor 192.168.92.1 activate\n!"
 hostname: CE2
 ip_name_servers:
 - ip_address: 169.254.169.254

@@ -694,11 +694,6 @@ ip routing vrf SVC8
 system control-plane
   ip access-group BLOCK_BFD in
 !
-ip route 10.80.0.0/12 172.28.128.1
-ip route 10.239.0.0/16 172.28.128.1
-ip route 10.240.0.0/13 172.28.128.1
-ip route 172.16.0.0/12 172.28.128.1
-!
 patch panel
   patch subintpo9.101
       connector 1 interface Ethernet9.101

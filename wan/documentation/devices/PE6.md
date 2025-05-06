@@ -726,11 +726,6 @@ ip routing vrf SVC8
 !
 ip extcommunity-list L3EVPN_COM permit rt 0.0.0.0:20601
 !
-ip route 10.80.0.0/12 172.28.128.1
-ip route 10.239.0.0/16 172.28.128.1
-ip route 10.240.0.0/13 172.28.128.1
-ip route 172.16.0.0/12 172.28.128.1
-!
 patch panel
   patch subintf-100-101
       connector 1 interface Ethernet3.101
@@ -865,8 +860,6 @@ router bgp 65000
   !
   session tracker ROUTE_REFLECTORS
       recovery delay 600 seconds
-!
-router general
 !
 router traffic-engineering
   flex-algo
